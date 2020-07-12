@@ -1,16 +1,52 @@
-# flutter_usage
+# Flutter学習用プロジェクト
 
-Flutter学習用プロジェクト
+## 目的
 
-## Getting Started
+* Flutterアプリ開発の全体像把握
+* AndroidとiOSアプリ実機実行までの流れやってみる
+* Dartの学習
+* Codemagic使ってみる
 
-This project is a starting point for a Flutter application.
+## 開発環境
 
-A few resources to get you started if this is your first Flutter project:
+* Windows 10
+* Android Studio 4.0
+* Flutter 1.20.0-8.0.pre.57
+* Git 2.27.0.windows.1
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## 構築手順
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Flutter
+
+1. 基本[ここ](https://flutter.dev/docs/get-started/install/windows)みればできる
+
+2. Flutter SDKダウンロード
+    * 今後のアップデートを考えてGitでcloneした方がよい
+
+    ```sh
+    > git clone https://github.com/flutter/flutter.git -b stable
+    ```
+
+3. 環境変数のPATHに追加
+    * FLUTTER_HOME : /path/to/flutter
+    * PATH : %PATH%;%FlUTTER_HOME%/bin
+4. コマンドプロンプトなどでcloneした場所に移動
+5. コマンド実行
+
+    ```sh
+    > flutter doctor
+    ```
+
+### Android Studio
+
+1. Android Studioダウンロード&インストール
+2. Flutterプラグイン追加
+    * pluginsで「Flutter」で検索すると出る
+    * 再起動して反映
+
+### Flutterプロジェクト作成
+
+1. Android Studio起動
+2. 「Start a new Flutter project」選択
+3. 普通に作りたいものや名前を指定する
+    * Flutter SDKは↑で配置した場所
