@@ -36,6 +36,11 @@
     ```sh
     > flutter doctor
     ```
+6. 初期設定
+
+    ```sh
+    > flutter config --enable-web
+    ```
 
 ### Android Studio
 
