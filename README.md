@@ -13,6 +13,8 @@
 * Android Studio 4.0
 * Flutter 1.20.0-8.0.pre.57
 * Git 2.27.0.windows.1
+* Xperia 10 II(Android 10)
+    * 開発PCで実機デバッグ実行の設定済
 
 ## 構築手順
 
@@ -51,7 +53,29 @@
 
 ### Flutterプロジェクト作成
 
+#### Android Studio
+
 1. Android Studio起動
 2. 「Start a new Flutter project」選択
 3. 普通に作りたいものや名前を指定する
     * Flutter SDKは↑で配置した場所
+
+#### コマンド
+
+```sh
+> flutter create アプリ名
+```
+
+## 実行
+
+### 実行可能デバイスの確認
+
+```sh
+> flutter devices
+```
+
+### コマンド
+
+```sh
+> flutter run --device-id XXXXX(devicesで取得するID)
+```
