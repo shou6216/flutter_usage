@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'list_item.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -52,145 +54,49 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-  List<Map<String, dynamic>> _listItems = [
-    {
-      'no': '1',
-      'name': 'スライム',
-      'kill_rainbow': true,
-      'heart_rank_s': true
-    },
-    {
-      'no': '1',
-      'name': 'スライム',
-      'kill_rainbow': true,
-      'heart_rank_s': true
-    },
-    {
-      'no': '1',
-      'name': 'スライム',
-      'kill_rainbow': true,
-      'heart_rank_s': true
-    },
-    {
-      'no': '1',
-      'name': 'スライム',
-      'kill_rainbow': true,
-      'heart_rank_s': true
-    },
-    {
-      'no': '1',
-      'name': 'スライム',
-      'kill_rainbow': true,
-      'heart_rank_s': true
-    },
-    {
-      'no': '1',
-      'name': 'スライム',
-      'kill_rainbow': true,
-      'heart_rank_s': true
-    },
-    {
-      'no': '1',
-      'name': 'スライム',
-      'kill_rainbow': true,
-      'heart_rank_s': true
-    },
-    {
-      'no': '1',
-      'name': 'スライム',
-      'kill_rainbow': true,
-      'heart_rank_s': true
-    },
-    {
-      'no': '1',
-      'name': 'スライム',
-      'kill_rainbow': true,
-      'heart_rank_s': true
-    },
-    {
-      'no': '1',
-      'name': 'スライム',
-      'kill_rainbow': true,
-      'heart_rank_s': true
-    },
-    {
-      'no': '1',
-      'name': 'スライム',
-      'kill_rainbow': true,
-      'heart_rank_s': true
-    },
-    {
-      'no': '1',
-      'name': 'スライム',
-      'kill_rainbow': true,
-      'heart_rank_s': true
-    },
-    {
-      'no': '1',
-      'name': 'スライム',
-      'kill_rainbow': true,
-      'heart_rank_s': true
-    },
-    {
-      'no': '1',
-      'name': 'スライム',
-      'kill_rainbow': true,
-      'heart_rank_s': true
-    },
-    {
-      'no': '1',
-      'name': 'スライム',
-      'kill_rainbow': true,
-      'heart_rank_s': true
-    },
-    {
-      'no': '1',
-      'name': 'スライム',
-      'kill_rainbow': true,
-      'heart_rank_s': true
-    },
-    {
-      'no': '1',
-      'name': 'スライム',
-      'kill_rainbow': true,
-      'heart_rank_s': true
-    },
-    {
-      'no': '1',
-      'name': 'スライム',
-      'kill_rainbow': true,
-      'heart_rank_s': true
-    },
-    {
-      'no': '1',
-      'name': 'スライム',
-      'kill_rainbow': true,
-      'heart_rank_s': true
-    },
-    {
-      'no': '1',
-      'name': 'スライム',
-      'kill_rainbow': true,
-      'heart_rank_s': true
-    },
-    {
-      'no': '1',
-      'name': 'スライム',
-      'kill_rainbow': true,
-      'heart_rank_s': true
-    },
-    {
-      'no': '1',
-      'name': 'スライム',
-      'kill_rainbow': true,
-      'heart_rank_s': true
-    },
-    {
-      'no': '1',
-      'name': 'スライム',
-      'kill_rainbow': true,
-      'heart_rank_s': true
-    }
+  List<ListItem> _listItems = [
+    ListItem(1, 'スライム', 1, 1),
+    ListItem(233, 'メガザルロック', 1, 1),
+    ListItem(3, 'スライム', 1, 1),
+    ListItem(4, 'スライム', 1, 1),
+    ListItem(5, 'スライム', 1, 1),
+    ListItem(6, 'スライム', 1, 1),
+    ListItem(7, 'スライム', 1, 1),
+    ListItem(1, 'スライム', 1, 1),
+    ListItem(2, 'スライム', 1, 1),
+    ListItem(3, 'スライム', 1, 1),
+    ListItem(4, 'スライム', 1, 1),
+    ListItem(5, 'スライム', 1, 1),
+    ListItem(6, 'スライム', 1, 1),
+    ListItem(7, 'スライム', 1, 1),
+    ListItem(1, 'スライム', 1, 1),
+    ListItem(2, 'スライム', 1, 1),
+    ListItem(3, 'スライム', 1, 1),
+    ListItem(4, 'スライム', 1, 1),
+    ListItem(5, 'スライム', 1, 1),
+    ListItem(6, 'スライム', 1, 1),
+    ListItem(7, 'スライム', 1, 1),
+    ListItem(1, 'スライム', 1, 1),
+    ListItem(2, 'スライム', 1, 1),
+    ListItem(3, 'スライム', 1, 1),
+    ListItem(4, 'スライム', 1, 1),
+    ListItem(5, 'スライム', 1, 1),
+    ListItem(6, 'スライム', 1, 1),
+    ListItem(7, 'スライム', 1, 1),
+    ListItem(1, 'スライム', 1, 1),
+    ListItem(2, 'スライム', 1, 1),
+    ListItem(3, 'スライム', 1, 1),
+    ListItem(4, 'スライム', 1, 1),
+    ListItem(5, 'スライム', 1, 1),
+    ListItem(6, 'スライム', 1, 1),
+    ListItem(7, 'スライム', 1, 1),
+    ListItem(1, 'あくましんかん', 1, 1),
+    ListItem(299, 'スライム', 1, 1),
+    ListItem(399, 'スライム', 1, 1),
+    ListItem(499, 'スライム', 1, 1),
+    ListItem(599, 'スライム', 1, 1),
+    ListItem(699, 'スライム', 1, 1),
+    ListItem(799, 'スライム', 1, 1)
   ];
 
   void _incrementCounter() {
@@ -221,13 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
         body: ListView.builder(
             itemCount: _listItems.length,
             itemBuilder: (context, index) {
-              return Card(
-                  child: ListTile(
-                    title: Text(_listItems[index]['no']),
-                  )
-              );
-            }
-        )
-    );
+              return _listItems[index];
+            }));
   }
 }
