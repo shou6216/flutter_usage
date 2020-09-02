@@ -1,43 +1,43 @@
 import 'package:flutter/material.dart';
 
 class ListItem extends StatelessWidget {
-  final int _no;
-  final String _name;
-  final int _killRainbow;
-  final int _heartRankS;
+  final int no;
+  final String name;
+  final int killRainbow;
+  final int heartRankS;
 
-  ListItem(this._no, this._name, this._killRainbow, this._heartRankS);
+  ListItem(this.no, this.name, this.killRainbow, this.heartRankS);
 
   @override
   Widget build(BuildContext context) {
     return Card(
         child: Row(mainAxisSize: MainAxisSize.max, children: [
-      Text(this._no.toString().padLeft(3, "0")),
-      Expanded(flex: 2, child: ListTile(title: Text(this._name))),
-      Expanded(flex: 1, child: Text(this._killRainbowMsg())),
-      Expanded(flex: 1, child: Text(this._heartRankSMsg()))
+      Text(this.no.toString().padLeft(3, "0")),
+      Expanded(flex: 2, child: ListTile(title: Text(this.name))),
+      Expanded(flex: 1, child: Text(this.killRainbowMsg())),
+      Expanded(flex: 1, child: Text(this.heartRankSMsg()))
     ]));
   }
 
-  String _killRainbowMsg() {
-    switch (this._killRainbow) {
+  String killRainbowMsg() {
+    switch (this.killRainbow) {
       case 1:
         return '達成';
       case 2:
         return 'ボスのみ';
       default:
-        return null;
+        return '';
     }
   }
 
-  String _heartRankSMsg() {
-    switch (this._heartRankS) {
+  String heartRankSMsg() {
+    switch (this.heartRankS) {
       case 1:
         return '達成';
       case 2:
         return 'こころなし';
       default:
-        return null;
+        return '';
     }
   }
 }

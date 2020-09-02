@@ -52,9 +52,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  final Map<int, String> _selectItems = {
+    1: "図鑑虹まだ+こころSまだ",
+    2: "図鑑虹まだ",
+    3: "こころSまだ",
+    4: "全て"
+  };
 
-  List<ListItem> _listItems = [
+  final List<ListItem> _listItems = [
     ListItem(1, 'スライム', 1, 1),
     ListItem(233, 'メガザルロック', 1, 1),
     ListItem(3, 'スライム', 1, 1),
@@ -99,16 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
     ListItem(799, 'スライム', 1, 1)
   ];
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  int _selectValue = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -124,10 +120,67 @@ class _MyHomePageState extends State<MyHomePage> {
           // the App.build method, and use it to set our appbar title.
           title: Text(widget.title),
         ),
-        body: ListView.builder(
-            itemCount: _listItems.length,
-            itemBuilder: (context, index) {
-              return _listItems[index];
-            }));
+        body: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          Expanded(
+              flex: 1,
+              child: DropdownButton<int>(
+                value: _selectValue,
+                icon: Icon(Icons.arrow_downward),
+                iconSize: 24,
+                elevation: 16,
+                style: TextStyle(color: Colors.deepPurple),
+                underline: Container(
+                  height: 2,
+                  color: Colors.deepPurpleAccent,
+                ),
+                items: _selectItems.entries
+                    .map<DropdownMenuItem<int>>((MapEntry<int, String> entry) {
+                  return DropdownMenuItem<int>(
+                    value: entry.key,
+                    child: Text(entry.value),
+                  );
+                }).toList(),
+              )),
+          Expanded(
+              flex: 9,
+              child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: DataTable(
+                      columns: const <DataColumn>[
+                        DataColumn(
+                          label: Text(
+                            'Name',
+                            style: TextStyle(fontStyle: FontStyle.italic),
+                          ),
+                        ),
+                        DataColumn(
+                          label: Text(
+                            'Age',
+                            style: TextStyle(fontStyle: FontStyle.italic),
+                          ),
+                        ),
+                        DataColumn(
+                          label: Text(
+                            'Role',
+                            style: TextStyle(fontStyle: FontStyle.italic),
+                          ),
+                        ),
+                        DataColumn(
+                          label: Text(
+                            'Role2',
+                            style: TextStyle(fontStyle: FontStyle.italic),
+                          ),
+                        )
+                      ],
+                      rows: _listItems
+                          .map<DataRow>((item) => DataRow(cells: <DataCell>[
+                                DataCell(
+                                    Text(item.no.toString().padLeft(3, "0"))),
+                                DataCell(Text(item.name)),
+                                DataCell(Text(item.killRainbowMsg())),
+                                DataCell(Text(item.heartRankSMsg()))
+                              ]))
+                          .toList())))
+        ]));
   }
 }
