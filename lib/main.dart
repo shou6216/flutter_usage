@@ -129,10 +129,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 iconSize: 24,
                 elevation: 16,
                 style: TextStyle(color: Colors.deepPurple),
-                underline: Container(
-                  height: 2,
-                  color: Colors.deepPurpleAccent,
-                ),
+                onChanged: (int newValue) {
+                  setState(() {
+                    _selectValue = newValue;
+                  });
+                },
                 items: _selectItems.entries
                     .map<DropdownMenuItem<int>>((MapEntry<int, String> entry) {
                   return DropdownMenuItem<int>(
