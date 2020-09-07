@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'list_item.dart';
@@ -108,27 +109,23 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
         appBar: AppBar(
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
           title: Text(widget.title),
         ),
         body: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          Expanded(
-              flex: 1,
+          Padding(
+              padding: EdgeInsets.only(
+                  top: 2.0, right: 5.0, bottom: 2.0, left: 5.0),
               child: DropdownButton<int>(
                 value: _selectValue,
-                icon: Icon(Icons.arrow_downward),
-                iconSize: 24,
-                elevation: 16,
-                style: TextStyle(color: Colors.deepPurple),
+                iconSize: 32,
+                style: TextStyle(color: Colors.black, fontSize: 24),
+                isExpanded: true,
+                underline: Container(
+                  height: 1,
+                  color: Colors.black,
+                ),
                 onChanged: (int newValue) {
                   setState(() {
                     _selectValue = newValue;
@@ -137,13 +134,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 items: _selectItems.entries
                     .map<DropdownMenuItem<int>>((MapEntry<int, String> entry) {
                   return DropdownMenuItem<int>(
-                    value: entry.key,
-                    child: Text(entry.value),
-                  );
+                      value: entry.key, child: Text(entry.value));
                 }).toList(),
               )),
           Expanded(
-              flex: 9,
+              flex: 1,
               child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: DataTable(
