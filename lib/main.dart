@@ -115,8 +115,8 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Padding(
-              padding: EdgeInsets.only(
-                  top: 2.0, right: 5.0, bottom: 2.0, left: 5.0),
+              padding:
+                  EdgeInsets.only(top: 2.0, right: 5.0, bottom: 2.0, left: 5.0),
               child: DropdownButton<int>(
                 value: _selectValue,
                 iconSize: 32,
@@ -142,31 +142,17 @@ class _MyHomePageState extends State<MyHomePage> {
               child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: DataTable(
+                      headingRowHeight: 30,
+                      horizontalMargin: 10,
                       columns: const <DataColumn>[
                         DataColumn(
-                          label: Text(
-                            'Name',
-                            style: TextStyle(fontStyle: FontStyle.italic),
-                          ),
-                        ),
+                            label: Text('No.', style: TextStyle(fontSize: 15))),
                         DataColumn(
-                          label: Text(
-                            'Age',
-                            style: TextStyle(fontStyle: FontStyle.italic),
-                          ),
-                        ),
+                            label: Text('名前', style: TextStyle(fontSize: 15))),
                         DataColumn(
-                          label: Text(
-                            'Role',
-                            style: TextStyle(fontStyle: FontStyle.italic),
-                          ),
-                        ),
+                            label: Text('図鑑', style: TextStyle(fontSize: 15))),
                         DataColumn(
-                          label: Text(
-                            'Role2',
-                            style: TextStyle(fontStyle: FontStyle.italic),
-                          ),
-                        )
+                            label: Text('こころ', style: TextStyle(fontSize: 15)))
                       ],
                       rows: _listItems
                           .map<DataRow>((item) => DataRow(cells: <DataCell>[
