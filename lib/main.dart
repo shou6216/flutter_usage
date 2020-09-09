@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'list_item.dart';
+import 'database_helper.dart';
 
 void main() {
   runApp(MyApp());
@@ -53,6 +54,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  final dbHelper = DatabaseHelper.instance;
+
   final Map<int, String> _selectItems = {
     1: "図鑑虹まだ+こころSまだ",
     2: "図鑑虹まだ",
@@ -109,6 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    dbHelper.queryAllRows();
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
