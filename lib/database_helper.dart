@@ -1,6 +1,8 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
+import 'monster.dart';
+
 class DatabaseHelper {
   static final table = 'monster';
   static final columnId = 'id';
@@ -28,7 +30,7 @@ class DatabaseHelper {
   _initDatabase() async {
     return await openDatabase(join(await getDatabasesPath(), 'dqw.db'),
         onCreate: (db, version) {
-      return db.execute('''
+      db.execute('''
           CREATE TABLE $table (
             $columnId INTEGER PRIMARY KEY,
             $columnName TEXT NOT NULL,
@@ -38,12 +40,16 @@ class DatabaseHelper {
             $columnUpdatedAt TEXT NOT NULL DEFAULT (DATETIME('now', 'localtime'))
           )
           ''');
-    }, version: 1);
-  }
 
-  Future<int> insert(Map<String, dynamic> row) async {
-    Database db = await instance.database;
-    return await db.insert(table, row);
+      final values = Monster.v1
+          .map((e) => '(${e.id},\'${e.name}\',${e.kill},${e.heart})')
+          .join(',');
+
+      db.execute('''
+          INSERT INTO $table($columnId, $columnName, $columnKill, $columnHeart) 
+          VALUES$values
+      ''');
+    }, version: 1);
   }
 
   Future<List<Map<String, dynamic>>> queryAllRows() async {
