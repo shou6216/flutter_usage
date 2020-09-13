@@ -42,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
     4: "全て"
   };
 
-  int _selectValue = 1;
+  int _searchType = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
               padding:
                   EdgeInsets.only(top: 2.0, right: 5.0, bottom: 2.0, left: 5.0),
               child: DropdownButton<int>(
-                value: _selectValue,
+                value: _searchType,
                 iconSize: 32,
                 style: TextStyle(color: Colors.black, fontSize: 24),
                 isExpanded: true,
@@ -63,9 +63,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: 1,
                   color: Colors.black,
                 ),
-                onChanged: (int newValue) {
+                onChanged: (int newSearchType) {
                   setState(() {
-                    _selectValue = newValue;
+                    _searchType = newSearchType;
                   });
                 },
                 items: _selectItems.entries
@@ -77,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Expanded(
               flex: 1,
               child: FutureBuilder<List<Monster>>(
-                  future: dbHelper.findBySearchType(_selectValue),
+                  future: dbHelper.findBySearchType(_searchType),
                   builder: (ctx, snapshot) {
                     return snapshot.hasData
                         ? SingleChildScrollView(

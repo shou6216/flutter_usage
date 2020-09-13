@@ -54,7 +54,8 @@ class DatabaseHelper {
 
   Future<List<Monster>> findBySearchType(final int searchType) async {
     final Database db = await instance.database;
-    final List<Map<String, dynamic>> results = await db.query(table);
+    final List<Map<String, dynamic>> results =
+        await db.query(table, where: getWhere(searchType));
     return results
         .map((map) => Monster(
             id: map['id'],
@@ -69,5 +70,19 @@ class DatabaseHelper {
     int id = row[columnId];
     print([id]);
     return await db.update(table, row, where: '$columnId = ?', whereArgs: [id]);
+  }
+
+  String getWhere(int searchType) {
+    switch (searchType) {
+      case 1:
+        return '$columnKill < 2 and $columnHeart < 2';
+      case 2:
+        return '$columnKill < 2';
+      case 3:
+        return '$columnHeart < 2';
+      case 4:
+      default:
+        return null;
+    }
   }
 }
