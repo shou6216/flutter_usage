@@ -55,11 +55,12 @@ class DatabaseHelper {
   Future<List<Monster>> findBySearchType(final int searchType) async {
     final Database db = await instance.database;
     final List<Map<String, dynamic>> results = await db.query(table);
-    return results.map((map) => Monster(
-        id: map['id'],
-        name: map['name'],
-        kill: map['kill'],
-        heart: map['heart']))
+    return results
+        .map((map) => Monster(
+            id: map['id'],
+            name: map['name'],
+            kill: map['kill'],
+            heart: map['heart']))
         .toList();
   }
 
