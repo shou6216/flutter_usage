@@ -59,7 +59,8 @@ class DatabaseHelper {
         id: map['id'],
         name: map['name'],
         kill: map['kill'],
-        heart: map['heart']));
+        heart: map['heart']))
+        .toList();
   }
 
   Future<int> update(Map<String, dynamic> row) async {

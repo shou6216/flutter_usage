@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'list_item.dart';
 import 'database_helper.dart';
+import 'monster.dart';
 
 void main() {
   runApp(MyApp());
@@ -54,7 +54,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   final dbHelper = DatabaseHelper.instance;
 
   final Map<int, String> _selectItems = {
@@ -64,56 +63,10 @@ class _MyHomePageState extends State<MyHomePage> {
     4: "全て"
   };
 
-  final List<ListItem> _listItems = [
-    ListItem(1, 'スライム', 1, 1),
-    ListItem(233, 'メガザルロック', 1, 1),
-    ListItem(3, 'スライム', 1, 1),
-    ListItem(4, 'スライム', 1, 1),
-    ListItem(5, 'スライム', 1, 1),
-    ListItem(6, 'スライム', 1, 1),
-    ListItem(7, 'スライム', 1, 1),
-    ListItem(1, 'スライム', 1, 1),
-    ListItem(2, 'スライム', 1, 1),
-    ListItem(3, 'スライム', 1, 1),
-    ListItem(4, 'スライム', 1, 1),
-    ListItem(5, 'スライム', 1, 1),
-    ListItem(6, 'スライム', 1, 1),
-    ListItem(7, 'スライム', 1, 1),
-    ListItem(1, 'スライム', 1, 1),
-    ListItem(2, 'スライム', 1, 1),
-    ListItem(3, 'スライム', 1, 1),
-    ListItem(4, 'スライム', 1, 1),
-    ListItem(5, 'スライム', 1, 1),
-    ListItem(6, 'スライム', 1, 1),
-    ListItem(7, 'スライム', 1, 1),
-    ListItem(1, 'スライム', 1, 1),
-    ListItem(2, 'スライム', 1, 1),
-    ListItem(3, 'スライム', 1, 1),
-    ListItem(4, 'スライム', 1, 1),
-    ListItem(5, 'スライム', 1, 1),
-    ListItem(6, 'スライム', 1, 1),
-    ListItem(7, 'スライム', 1, 1),
-    ListItem(1, 'スライム', 1, 1),
-    ListItem(2, 'スライム', 1, 1),
-    ListItem(3, 'スライム', 1, 1),
-    ListItem(4, 'スライム', 1, 1),
-    ListItem(5, 'スライム', 1, 1),
-    ListItem(6, 'スライム', 1, 1),
-    ListItem(7, 'スライム', 1, 1),
-    ListItem(1, 'あくましんかん', 1, 1),
-    ListItem(299, 'スライム', 1, 1),
-    ListItem(399, 'スライム', 1, 1),
-    ListItem(499, 'スライム', 1, 1),
-    ListItem(599, 'スライム', 1, 1),
-    ListItem(699, 'スライム', 1, 1),
-    ListItem(799, 'スライム', 1, 1)
-  ];
-
   int _selectValue = 1;
 
   @override
   Widget build(BuildContext context) {
-    dbHelper.queryAllRows();
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
@@ -144,30 +97,48 @@ class _MyHomePageState extends State<MyHomePage> {
               )),
           Expanded(
               flex: 1,
-              child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: DataTable(
-                      headingRowHeight: 30,
-                      horizontalMargin: 10,
-                      columns: const <DataColumn>[
-                        DataColumn(
-                            label: Text('No.', style: TextStyle(fontSize: 15))),
-                        DataColumn(
-                            label: Text('名前', style: TextStyle(fontSize: 15))),
-                        DataColumn(
-                            label: Text('図鑑', style: TextStyle(fontSize: 15))),
-                        DataColumn(
-                            label: Text('こころ', style: TextStyle(fontSize: 15)))
-                      ],
-                      rows: _listItems
-                          .map<DataRow>((item) => DataRow(cells: <DataCell>[
-                                DataCell(
-                                    Text(item.no.toString().padLeft(3, "0"))),
-                                DataCell(Text(item.name)),
-                                DataCell(Text(item.killRainbowMsg())),
-                                DataCell(Text(item.heartRankSMsg()))
-                              ]))
-                          .toList())))
+              child: FutureBuilder<List<Monster>>(
+                  future: dbHelper.findBySearchType(_selectValue),
+                  builder: (ctx, snapshot) {
+                    print(snapshot.data);
+                    print(snapshot.hasData);
+                    return snapshot.hasData
+                        ? SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: DataTable(
+                                headingRowHeight: 30,
+                                horizontalMargin: 10,
+                                columns: const <DataColumn>[
+                                  DataColumn(
+                                      label: Text('No.',
+                                          style: TextStyle(fontSize: 15))),
+                                  DataColumn(
+                                      label: Text('名前',
+                                          style: TextStyle(fontSize: 15))),
+                                  DataColumn(
+                                      label: Text('図鑑',
+                                          style: TextStyle(fontSize: 15))),
+                                  DataColumn(
+                                      label: Text('こころ',
+                                          style: TextStyle(fontSize: 15)))
+                                ],
+                                rows: snapshot.data
+                                    .map<DataRow>((monster) =>
+                                        DataRow(cells: <DataCell>[
+                                          DataCell(Text(monster.id
+                                              .toString()
+                                              .padLeft(3, "0"))),
+                                          DataCell(Text(monster.name)),
+                                          DataCell(
+                                              Text(monster.kill.toString())),
+                                          DataCell(
+                                              Text(monster.heart.toString()))
+                                        ]))
+                                    .toList()))
+                        : Center(
+                            child: CircularProgressIndicator(),
+                          );
+                  }))
         ]));
   }
 }
