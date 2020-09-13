@@ -102,14 +102,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                 rows: snapshot.data
                                     .map<DataRow>((monster) =>
                                         DataRow(cells: <DataCell>[
-                                          DataCell(Text(monster.id
-                                              .toString()
-                                              .padLeft(3, "0"))),
+                                          DataCell(Text(monster.idMessage)),
                                           DataCell(Text(monster.name)),
-                                          DataCell(
-                                              Text(monster.kill.toString())),
-                                          DataCell(
-                                              Text(monster.heart.toString()))
+                                          DataCell(Text(monster.killMessage)),
+                                          DataCell(Text(monster.heartMessage))
                                         ]))
                                     .toList()))
                         : Center(

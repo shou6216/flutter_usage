@@ -4,7 +4,7 @@ class Monster {
   final int kill;
   final int heart;
 
-  static List<Monster> v1 = [
+  static final List<Monster> v1 = [
     new Monster(id: 1, name: 'スライム', kill: 2, heart: 2),
     new Monster(id: 2, name: 'ドラキー', kill: 2, heart: 2),
     new Monster(id: 3, name: 'スライムベス', kill: 2, heart: 2),
@@ -288,4 +288,31 @@ class Monster {
   ];
 
   Monster({this.id, this.name, this.kill, this.heart});
+
+  String get idMessage {
+    return id.toString().padLeft(3, "0");
+  }
+
+  String get killMessage {
+    switch (this.kill) {
+      case 1:
+        return '虹なし(ボス)';
+      case 2:
+        return '達成';
+      case 0:
+      default:
+        return '未達成';
+    }
+  }
+
+  String get heartMessage {
+    switch (this.heart) {
+      case 1:
+        return 'こころなし';
+      case 2:
+        return '達成';
+      default:
+        return '未達成';
+    }
+  }
 }
