@@ -82,32 +82,35 @@ class _MyHomePageState extends State<MyHomePage> {
                     return snapshot.hasData
                         ? SingleChildScrollView(
                             scrollDirection: Axis.vertical,
-                            child: DataTable(
-                                headingRowHeight: 30,
-                                horizontalMargin: 10,
-                                columns: const <DataColumn>[
-                                  DataColumn(
-                                      label: Text('No.',
-                                          style: TextStyle(fontSize: 15))),
-                                  DataColumn(
-                                      label: Text('名前',
-                                          style: TextStyle(fontSize: 15))),
-                                  DataColumn(
-                                      label: Text('図鑑',
-                                          style: TextStyle(fontSize: 15))),
-                                  DataColumn(
-                                      label: Text('こころ',
-                                          style: TextStyle(fontSize: 15)))
-                                ],
-                                rows: snapshot.data
-                                    .map<DataRow>((monster) =>
-                                        DataRow(cells: <DataCell>[
-                                          DataCell(Text(monster.idMessage)),
-                                          DataCell(Text(monster.name)),
-                                          DataCell(Text(monster.killMessage)),
-                                          DataCell(Text(monster.heartMessage))
-                                        ]))
-                                    .toList()))
+                            child: FittedBox(
+                                child: DataTable(
+                                    headingRowHeight: 30,
+                                    horizontalMargin: 10,
+                                    columns: const <DataColumn>[
+                                      DataColumn(
+                                          label: Text('No.',
+                                              style: TextStyle(fontSize: 15))),
+                                      DataColumn(
+                                          label: Text('名前',
+                                              style: TextStyle(fontSize: 15))),
+                                      DataColumn(
+                                          label: Text('図鑑',
+                                              style: TextStyle(fontSize: 15))),
+                                      DataColumn(
+                                          label: Text('こころ',
+                                              style: TextStyle(fontSize: 15)))
+                                    ],
+                                    rows: snapshot.data
+                                        .map<DataRow>((monster) =>
+                                            DataRow(cells: <DataCell>[
+                                              DataCell(Text(monster.idMessage)),
+                                              DataCell(Text(monster.name)),
+                                              DataCell(
+                                                  Text(monster.killMessage)),
+                                              DataCell(
+                                                  Text(monster.heartMessage))
+                                            ]))
+                                        .toList())))
                         : Center(
                             child: CircularProgressIndicator(),
                           );
