@@ -39,7 +39,9 @@ class _MyHomePageState extends State<MyHomePage> {
     1: "図鑑虹まだ+こころSまだ",
     2: "図鑑虹まだ",
     3: "こころSまだ",
-    4: "全て"
+    4: "図鑑虹なし",
+    5: "こころSなし",
+    6: "全て"
   };
 
   int _searchType = 1;

@@ -75,12 +75,16 @@ class DatabaseHelper {
   String getWhere(int searchType) {
     switch (searchType) {
       case 1:
-        return '$columnKill < 2 or $columnHeart < 2';
+        return '$columnKill = 0 or $columnHeart = 0';
       case 2:
-        return '$columnKill < 2';
+        return '$columnKill = 0';
       case 3:
-        return '$columnHeart < 2';
+        return '$columnHeart = 0';
       case 4:
+        return '$columnKill = 1';
+      case 5:
+        return '$columnHeart = 1';
+      case 6:
       default:
         return null;
     }
