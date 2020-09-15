@@ -13,13 +13,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final String title = 'DQW討伐管理アプリ';
     return MaterialApp(
-      title: title,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: MyHomePage(title: title),
-    );
+        title: title,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: MyHomePage(title: title),
+        routes: <String, WidgetBuilder>{
+          '/home': (BuildContext context) => new MyHomePage(),
+          '/new': (BuildContext context) => new NewMonsterPage()
+        });
   }
 }
 
@@ -30,6 +33,13 @@ class MyHomePage extends StatefulWidget {
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
+}
+
+class NewMonsterPage extends StatefulWidget {
+  NewMonsterPage({Key key}) : super(key: key);
+
+  @override
+  _NewMonsterPageState createState() => _NewMonsterPageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -51,6 +61,13 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.add),
+              tooltip: 'モンスター追加',
+              onPressed: () => {Navigator.of(context).pushNamed('/new')},
+            )
+          ],
         ),
         body: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Padding(
@@ -125,5 +142,23 @@ class _MyHomePageState extends State<MyHomePage> {
                           );
                   }))
         ]));
+  }
+}
+
+class _NewMonsterPageState extends State<NewMonsterPage> {
+  final dbHelper = DatabaseHelper.instance;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(title: Text('モンスター追加')),
+        body: new Container(
+          padding: new EdgeInsets.all(32.0),
+          child: new Center(
+            child: new Column(children: <Widget>[
+              Text('Sub'),
+            ]),
+          ),
+        ));
   }
 }
