@@ -89,26 +89,33 @@ class _MyHomePageState extends State<MyHomePage> {
                                     columns: const <DataColumn>[
                                       DataColumn(
                                           label: Text('No.',
-                                              style: TextStyle(fontSize: 15))),
+                                              style: TextStyle(fontSize: 20))),
                                       DataColumn(
                                           label: Text('名前',
-                                              style: TextStyle(fontSize: 15))),
+                                              style: TextStyle(fontSize: 20))),
                                       DataColumn(
-                                          label: Text('図鑑',
-                                              style: TextStyle(fontSize: 15))),
+                                          label: Text('図鑑虹',
+                                              style: TextStyle(fontSize: 20))),
                                       DataColumn(
-                                          label: Text('こころ',
-                                              style: TextStyle(fontSize: 15)))
+                                          label: Text('こころＳ',
+                                              style: TextStyle(fontSize: 20)))
                                     ],
                                     rows: snapshot.data
                                         .map<DataRow>((monster) =>
                                             DataRow(cells: <DataCell>[
-                                              DataCell(Text(monster.idMessage)),
-                                              DataCell(Text(monster.name)),
-                                              DataCell(
-                                                  Text(monster.killMessage)),
-                                              DataCell(
-                                                  Text(monster.heartMessage))
+                                              DataCell(Text(monster.idMessage,
+                                                  style:
+                                                      TextStyle(fontSize: 20))),
+                                              DataCell(Text(monster.name,
+                                                  style:
+                                                      TextStyle(fontSize: 20))),
+                                              DataCell(Text(monster.killMessage,
+                                                  style:
+                                                      TextStyle(fontSize: 20))),
+                                              DataCell(Text(
+                                                  monster.heartMessage,
+                                                  style:
+                                                      TextStyle(fontSize: 20)))
                                             ]))
                                         .toList())))
                         : Center(

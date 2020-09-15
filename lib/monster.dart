@@ -296,23 +296,23 @@ class Monster {
   String get killMessage {
     switch (this.kill) {
       case 1:
-        return '虹なし(ボス)';
+        return 'なし';
       case 2:
-        return '達成';
+        return '〇';
       case 0:
       default:
-        return '未達成';
+        return '✕';
     }
   }
 
   String get heartMessage {
     switch (this.heart) {
       case 1:
-        return 'こころなし';
+        return 'なし';
       case 2:
-        return '達成';
+        return '〇';
       default:
-        return '未達成';
+        return '✕';
     }
   }
 }
