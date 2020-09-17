@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'database_helper.dart';
 import 'monster.dart';
@@ -148,17 +149,67 @@ class _MyHomePageState extends State<MyHomePage> {
 class _NewMonsterPageState extends State<NewMonsterPage> {
   final dbHelper = DatabaseHelper.instance;
 
+  final _formKey = GlobalKey<FormState>();
+
+  int _id;
+  String _name;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text('モンスター追加')),
-        body: new Container(
-          padding: new EdgeInsets.all(32.0),
-          child: new Center(
-            child: new Column(children: <Widget>[
-              Text('Sub'),
-            ]),
-          ),
-        ));
+        body: Builder(builder: (BuildContext context) {
+          return Form(
+              key: _formKey,
+              child: Container(
+                  padding: const EdgeInsets.all(50.0),
+                  child: Column(
+                    children: <Widget>[
+                      new TextFormField(
+                        enabled: true,
+                        maxLength: 3,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        decoration: const InputDecoration(labelText: '図鑑No.'),
+                        validator: (String value) {
+                          if (value.isEmpty) {
+                            return '必須入力です';
+                          }
+
+                          int id = int.parse(value);
+                          return id > 0 ? null : '1以上です';
+                        },
+                        onSaved: (String value) {
+                          this._id = int.parse(value);
+                        },
+                      ),
+                      new TextFormField(
+                        maxLength: 30,
+                        keyboardType: TextInputType.name,
+                        decoration: const InputDecoration(labelText: '名前'),
+                        validator: (String value) {
+                          return value.isEmpty ? '必須入力です' : null;
+                        },
+                        onSaved: (String value) {
+                          this._name = value;
+                        },
+                      ),
+                      RaisedButton(
+                        onPressed: () {
+                          if (this._formKey.currentState.validate()) {
+                            this._formKey.currentState.save();
+                            Scaffold.of(context).showSnackBar(
+                                SnackBar(content: Text('Processing Data')));
+                            print(this._id);
+                            print(this._name);
+                          }
+                        },
+                        child: Text('追加'),
+                      )
+                    ],
+                  )));
+        }));
   }
 }
