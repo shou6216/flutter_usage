@@ -151,8 +151,13 @@ class _NewMonsterPageState extends State<NewMonsterPage> {
 
   final _formKey = GlobalKey<FormState>();
 
+  final Map<int, String> _killItems = {0: "まだ", 1: "虹なし", 2: "できた"};
+  final Map<int, String> _heartItems = {0: "まだ", 1: "こころなし", 2: "できた"};
+
   int _id;
   String _name;
+  int _kill;
+  int _heart;
 
   @override
   Widget build(BuildContext context) {
@@ -196,6 +201,38 @@ class _NewMonsterPageState extends State<NewMonsterPage> {
                           this._name = value;
                         },
                       ),
+                      new DropdownButtonFormField(
+                          value: _killItems.keys.first,
+                          decoration: const InputDecoration(labelText: '図鑑虹'),
+                          items: _killItems.entries.map<DropdownMenuItem<int>>(
+                              (MapEntry<int, String> entry) {
+                            return DropdownMenuItem<int>(
+                                value: entry.key, child: Text(entry.value));
+                          }).toList(),
+                          onSaved: (int value) {
+                            this._kill = value;
+                          },
+                          onChanged: (int newKill) {
+                            setState(() {
+                              _kill = newKill;
+                            });
+                          }),
+                      new DropdownButtonFormField(
+                          value: _heartItems.keys.first,
+                          decoration: const InputDecoration(labelText: 'こころS'),
+                          items: _heartItems.entries.map<DropdownMenuItem<int>>(
+                              (MapEntry<int, String> entry) {
+                            return DropdownMenuItem<int>(
+                                value: entry.key, child: Text(entry.value));
+                          }).toList(),
+                          onSaved: (int value) {
+                            this._heart = value;
+                          },
+                          onChanged: (int newHeart) {
+                            setState(() {
+                              _heart = newHeart;
+                            });
+                          }),
                       RaisedButton(
                         onPressed: () {
                           if (this._formKey.currentState.validate()) {
@@ -204,6 +241,8 @@ class _NewMonsterPageState extends State<NewMonsterPage> {
                                 SnackBar(content: Text('Processing Data')));
                             print(this._id);
                             print(this._name);
+                            print(this._kill);
+                            print(this._heart);
                           }
                         },
                         child: Text('追加'),
