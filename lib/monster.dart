@@ -296,7 +296,7 @@ class Monster {
   String get killMessage {
     switch (this.kill) {
       case 1:
-        return 'なし';
+        return '―';
       case 2:
         return '〇';
       case 0:
@@ -308,7 +308,7 @@ class Monster {
   String get heartMessage {
     switch (this.heart) {
       case 1:
-        return 'なし';
+        return '―';
       case 2:
         return '〇';
       default:

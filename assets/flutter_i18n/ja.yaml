@@ -1,0 +1,9 @@
+add: 追加
+add_monster: モンスター追加
+monster:
+  name: 名前
+  kill: 図鑑虹
+  heart: こころＳ
+
+
+required: 必須入力です

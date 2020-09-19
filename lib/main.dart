@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'database_helper.dart';
 import 'monster.dart';
@@ -19,6 +21,17 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
+        localizationsDelegates: [
+          FlutterI18nDelegate(
+            translationLoader: FileTranslationLoader(),
+            missingTranslationHandler: (key, locale) {
+              print(
+                  "--- Missing Key: $key, languageCode: ${locale.languageCode}");
+            },
+          ),
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate
+        ],
         home: MyHomePage(title: title),
         routes: <String, WidgetBuilder>{
           '/home': (BuildContext context) => new MyHomePage(),
@@ -65,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.add),
-              tooltip: 'モンスター追加',
+              tooltip: FlutterI18n.translate(context, 'add_monster'),
               onPressed: () => {Navigator.of(context).pushNamed('/new')},
             )
           ],
@@ -106,19 +119,25 @@ class _MyHomePageState extends State<MyHomePage> {
                                 child: DataTable(
                                     headingRowHeight: 30,
                                     horizontalMargin: 10,
-                                    columns: const <DataColumn>[
+                                    columns: <DataColumn>[
                                       DataColumn(
                                           label: Text('No.',
                                               style: TextStyle(fontSize: 20))),
                                       DataColumn(
-                                          label: Text('名前',
-                                              style: TextStyle(fontSize: 20))),
+                                          label: I18nText('monster.name',
+                                              child: Text('',
+                                                  style: TextStyle(
+                                                      fontSize: 20)))),
                                       DataColumn(
-                                          label: Text('図鑑虹',
-                                              style: TextStyle(fontSize: 20))),
+                                          label: I18nText('monster.kill',
+                                              child: Text('',
+                                                  style: TextStyle(
+                                                      fontSize: 20)))),
                                       DataColumn(
-                                          label: Text('こころＳ',
-                                              style: TextStyle(fontSize: 20)))
+                                          label: I18nText('monster.heart',
+                                              child: Text('',
+                                                  style:
+                                                      TextStyle(fontSize: 20))))
                                     ],
                                     rows: snapshot.data
                                         .map<DataRow>((monster) =>
@@ -162,7 +181,7 @@ class _NewMonsterPageState extends State<NewMonsterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('モンスター追加')),
+        appBar: AppBar(title: I18nText('add_monster')),
         body: Builder(builder: (BuildContext context) {
           return Form(
               key: _formKey,
@@ -177,10 +196,10 @@ class _NewMonsterPageState extends State<NewMonsterPage> {
                         inputFormatters: <TextInputFormatter>[
                           FilteringTextInputFormatter.digitsOnly,
                         ],
-                        decoration: const InputDecoration(labelText: '図鑑No.'),
+                        decoration: const InputDecoration(labelText: 'No.'),
                         validator: (String value) {
                           if (value.isEmpty) {
-                            return '必須入力です';
+                            return FlutterI18n.translate(context, 'required');
                           }
 
                           int id = int.parse(value);
@@ -193,9 +212,13 @@ class _NewMonsterPageState extends State<NewMonsterPage> {
                       new TextFormField(
                         maxLength: 30,
                         keyboardType: TextInputType.name,
-                        decoration: const InputDecoration(labelText: '名前'),
+                        decoration: InputDecoration(
+                            labelText:
+                                FlutterI18n.translate(context, 'monster.name')),
                         validator: (String value) {
-                          return value.isEmpty ? '必須入力です' : null;
+                          return value.isEmpty
+                              ? FlutterI18n.translate(context, 'required')
+                              : null;
                         },
                         onSaved: (String value) {
                           this._name = value;
@@ -203,7 +226,9 @@ class _NewMonsterPageState extends State<NewMonsterPage> {
                       ),
                       new DropdownButtonFormField(
                           value: _killItems.keys.first,
-                          decoration: const InputDecoration(labelText: '図鑑虹'),
+                          decoration: InputDecoration(
+                              labelText: FlutterI18n.translate(
+                                  context, 'monster.kill')),
                           items: _killItems.entries.map<DropdownMenuItem<int>>(
                               (MapEntry<int, String> entry) {
                             return DropdownMenuItem<int>(
@@ -219,7 +244,9 @@ class _NewMonsterPageState extends State<NewMonsterPage> {
                           }),
                       new DropdownButtonFormField(
                           value: _heartItems.keys.first,
-                          decoration: const InputDecoration(labelText: 'こころS'),
+                          decoration: InputDecoration(
+                              labelText: FlutterI18n.translate(
+                                  context, 'monster.heart')),
                           items: _heartItems.entries.map<DropdownMenuItem<int>>(
                               (MapEntry<int, String> entry) {
                             return DropdownMenuItem<int>(
@@ -245,7 +272,7 @@ class _NewMonsterPageState extends State<NewMonsterPage> {
                             print(this._heart);
                           }
                         },
-                        child: Text('追加'),
+                        child: I18nText('add'),
                       )
                     ],
                   )));
