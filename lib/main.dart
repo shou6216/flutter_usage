@@ -26,17 +26,13 @@ class MyApp extends StatelessWidget {
             translationLoader: FileTranslationLoader(),
             missingTranslationHandler: (key, locale) {
               print(
-                  "--- Missing Key: $key, languageCode: ${locale
-                      .languageCode}");
+                  "--- Missing Key: $key, languageCode: ${locale.languageCode}");
             },
           ),
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate
         ],
-        supportedLocales: [
-          const Locale('ja'),
-          const Locale('en')
-        ],
+        supportedLocales: [const Locale('ja'), const Locale('en')],
         home: MyHomePage(title: title),
         routes: <String, WidgetBuilder>{
           '/home': (BuildContext context) => new MyHomePage(),
@@ -91,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
         body: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           Padding(
               padding:
-              EdgeInsets.only(top: 2.0, right: 5.0, bottom: 2.0, left: 5.0),
+                  EdgeInsets.only(top: 2.0, right: 5.0, bottom: 2.0, left: 5.0),
               child: DropdownButton<int>(
                 value: _searchType,
                 iconSize: 32,
@@ -119,52 +115,52 @@ class _MyHomePageState extends State<MyHomePage> {
                   builder: (ctx, snapshot) {
                     return snapshot.hasData
                         ? SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: FittedBox(
-                            child: DataTable(
-                                headingRowHeight: 30,
-                                horizontalMargin: 10,
-                                columns: <DataColumn>[
-                                  DataColumn(
-                                      label: Text('No.',
-                                          style: TextStyle(fontSize: 20))),
-                                  DataColumn(
-                                      label: I18nText('monster.name',
-                                          child: Text('',
-                                              style: TextStyle(
-                                                  fontSize: 20)))),
-                                  DataColumn(
-                                      label: I18nText('monster.kill',
-                                          child: Text('',
-                                              style: TextStyle(
-                                                  fontSize: 20)))),
-                                  DataColumn(
-                                      label: I18nText('monster.heart',
-                                          child: Text('',
-                                              style:
-                                              TextStyle(fontSize: 20))))
-                                ],
-                                rows: snapshot.data
-                                    .map<DataRow>((monster) =>
-                                    DataRow(cells: <DataCell>[
-                                      DataCell(Text(monster.idMessage,
-                                          style:
-                                          TextStyle(fontSize: 20))),
-                                      DataCell(Text(monster.name,
-                                          style:
-                                          TextStyle(fontSize: 20))),
-                                      DataCell(Text(monster.killMessage,
-                                          style:
-                                          TextStyle(fontSize: 20))),
-                                      DataCell(Text(
-                                          monster.heartMessage,
-                                          style:
-                                          TextStyle(fontSize: 20)))
-                                    ]))
-                                    .toList())))
+                            scrollDirection: Axis.vertical,
+                            child: FittedBox(
+                                child: DataTable(
+                                    headingRowHeight: 30,
+                                    horizontalMargin: 10,
+                                    columns: <DataColumn>[
+                                      DataColumn(
+                                          label: Text('No.',
+                                              style: TextStyle(fontSize: 20))),
+                                      DataColumn(
+                                          label: I18nText('monster.name',
+                                              child: Text('',
+                                                  style: TextStyle(
+                                                      fontSize: 20)))),
+                                      DataColumn(
+                                          label: I18nText('monster.kill',
+                                              child: Text('',
+                                                  style: TextStyle(
+                                                      fontSize: 20)))),
+                                      DataColumn(
+                                          label: I18nText('monster.heart',
+                                              child: Text('',
+                                                  style:
+                                                      TextStyle(fontSize: 20))))
+                                    ],
+                                    rows: snapshot.data
+                                        .map<DataRow>((monster) =>
+                                            DataRow(cells: <DataCell>[
+                                              DataCell(Text(monster.idMessage,
+                                                  style:
+                                                      TextStyle(fontSize: 20))),
+                                              DataCell(Text(monster.name,
+                                                  style:
+                                                      TextStyle(fontSize: 20))),
+                                              DataCell(Text(monster.killMessage,
+                                                  style:
+                                                      TextStyle(fontSize: 20))),
+                                              DataCell(Text(
+                                                  monster.heartMessage,
+                                                  style:
+                                                      TextStyle(fontSize: 20)))
+                                            ]))
+                                        .toList())))
                         : Center(
-                      child: CircularProgressIndicator(),
-                    );
+                            child: CircularProgressIndicator(),
+                          );
                   }))
         ]));
   }
@@ -208,7 +204,10 @@ class _NewMonsterPageState extends State<NewMonsterPage> {
                           }
 
                           int id = int.parse(value);
-                          return id > 0 ? null : '1以上です';
+                          return id > 0
+                              ? null
+                              : FlutterI18n.translate(context, 'min',
+                                  translationParams: {'value': '1'});
                         },
                         onSaved: (String value) {
                           this._id = int.parse(value);
@@ -219,7 +218,7 @@ class _NewMonsterPageState extends State<NewMonsterPage> {
                         keyboardType: TextInputType.name,
                         decoration: InputDecoration(
                             labelText:
-                            FlutterI18n.translate(context, 'monster.name')),
+                                FlutterI18n.translate(context, 'monster.name')),
                         validator: (String value) {
                           return value.isEmpty
                               ? FlutterI18n.translate(context, 'required')
@@ -235,10 +234,10 @@ class _NewMonsterPageState extends State<NewMonsterPage> {
                               labelText: FlutterI18n.translate(
                                   context, 'monster.kill')),
                           items: _killItems.entries.map<DropdownMenuItem<int>>(
-                                  (MapEntry<int, String> entry) {
-                                return DropdownMenuItem<int>(
-                                    value: entry.key, child: Text(entry.value));
-                              }).toList(),
+                              (MapEntry<int, String> entry) {
+                            return DropdownMenuItem<int>(
+                                value: entry.key, child: Text(entry.value));
+                          }).toList(),
                           onSaved: (int value) {
                             this._kill = value;
                           },
@@ -253,10 +252,10 @@ class _NewMonsterPageState extends State<NewMonsterPage> {
                               labelText: FlutterI18n.translate(
                                   context, 'monster.heart')),
                           items: _heartItems.entries.map<DropdownMenuItem<int>>(
-                                  (MapEntry<int, String> entry) {
-                                return DropdownMenuItem<int>(
-                                    value: entry.key, child: Text(entry.value));
-                              }).toList(),
+                              (MapEntry<int, String> entry) {
+                            return DropdownMenuItem<int>(
+                                value: entry.key, child: Text(entry.value));
+                          }).toList(),
                           onSaved: (int value) {
                             this._heart = value;
                           },

@@ -7,3 +7,4 @@ monster:
 
 
 required: 必須入力です
+min: '{value}以上です'

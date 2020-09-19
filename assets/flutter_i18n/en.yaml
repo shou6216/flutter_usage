@@ -7,3 +7,4 @@ monster:
 
 
 required: Required
+min: 'more {value}'
