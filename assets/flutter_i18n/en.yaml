@@ -1,0 +1,9 @@
+add: Add
+add_monster: Add Monster
+monster:
+  name: Name
+  kill: Rainbow
+  heart: HeartS
+
+
+required: Required
