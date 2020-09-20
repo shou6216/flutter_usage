@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'database_helper.dart';
 import 'monster.dart';
+import 'type.dart';
 
 void main() {
   runApp(MyApp());
@@ -60,16 +61,7 @@ class NewMonsterPage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final dbHelper = DatabaseHelper.instance;
 
-  final Map<int, String> _selectItems = {
-    1: "図鑑虹まだ+こころSまだ",
-    2: "図鑑虹まだ",
-    3: "こころSまだ",
-    4: "図鑑虹なし",
-    5: "こころSなし",
-    6: "全て"
-  };
-
-  int _searchType = 1;
+  int _searchType = SearchTypeHelper.getId(SearchType.values.first);
 
   @override
   Widget build(BuildContext context) {
@@ -102,10 +94,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     _searchType = newSearchType;
                   });
                 },
-                items: _selectItems.entries
-                    .map<DropdownMenuItem<int>>((MapEntry<int, String> entry) {
+                items: SearchType.values
+                    .map<DropdownMenuItem<int>>((SearchType searchType) {
                   return DropdownMenuItem<int>(
-                      value: entry.key, child: Text(entry.value));
+                      value: SearchTypeHelper.getId(searchType),
+                      child: I18nText(SearchTypeHelper.getNameKey(searchType)));
                 }).toList(),
               )),
           Expanded(

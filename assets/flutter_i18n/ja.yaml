@@ -4,7 +4,13 @@ monster:
   name: 名前
   kill: 図鑑虹
   heart: こころＳ
-
+searchType:
+  incomplete: 未完了
+  incomplete_kill: 図鑑虹未完了
+  incomplete_heart: こころＳ未完了
+  none_kill: 図鑑虹なし
+  none_heart: こころＳなし
+　all: 全て
 
 required: 必須入力です
 min: '{value}以上です'
