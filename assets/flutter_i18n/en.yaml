@@ -21,5 +21,11 @@ heartType:
     incomplete: Incomplete
     none: None
     complete: Complete
+db:
+  success:
+    insert: Inserted
+  error:
+    insert_unique: '{id} is already inserted'
+    unknown: Unknown error
 required: Required
 min: 'more {value}'

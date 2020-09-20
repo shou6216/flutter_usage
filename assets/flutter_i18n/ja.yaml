@@ -21,5 +21,11 @@ heartType:
     incomplete: 未完了
     none: なし
     complete: 完了
+db:
+  success:
+    insert: 登録しました
+  error:
+    insert_unique: '{id}は既に登録されています'
+    unknown: 予期せぬエラーが発生しました
 required: 必須入力です
 min: '{value}以上です'

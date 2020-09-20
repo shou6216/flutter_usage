@@ -12,6 +12,9 @@ class DatabaseHelper {
   static final columnCreatedAt = 'created_at';
   static final columnUpdatedAt = 'updated_at';
 
+  static final int error = -1;
+  static final int errorInsertUnique = -2;
+
   // シングルトン用名前付きコンストラクタ
   DatabaseHelper._privateConstructor();
 
@@ -63,6 +66,22 @@ class DatabaseHelper {
             kill: map['kill'],
             heart: map['heart']))
         .toList();
+  }
+
+  Future<int> insert(Map<String, dynamic> row) async {
+    Database db = await instance.database;
+    print(row);
+    try {
+      return await db.insert(table, row,
+          conflictAlgorithm: ConflictAlgorithm.rollback);
+    } on DatabaseException catch (e) {
+      if (e.isUniqueConstraintError()) {
+        return errorInsertUnique;
+      }
+
+      print(e);
+      return error;
+    }
   }
 
   Future<int> update(Map<String, dynamic> row) async {

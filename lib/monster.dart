@@ -302,4 +302,13 @@ class Monster {
   String get heartMessage {
     return HeartTypeHelper.getShortName(this.heart);
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': this.id,
+      'name': this.name,
+      'kill': this.kill,
+      'heart': this.heart
+    };
+  }
 }

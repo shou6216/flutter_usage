@@ -262,12 +262,32 @@ class _NewMonsterPageState extends State<NewMonsterPage> {
                         onPressed: () {
                           if (this._formKey.currentState.validate()) {
                             this._formKey.currentState.save();
-                            Scaffold.of(context).showSnackBar(
-                                SnackBar(content: Text('Processing Data')));
-                            print(this._id);
-                            print(this._name);
-                            print(this._kill);
-                            print(this._heart);
+                            this
+                                .dbHelper
+                                .insert(new Monster(
+                                        id: this._id,
+                                        name: this._name,
+                                        kill: this._kill,
+                                        heart: this._heart)
+                                    .toMap())
+                                .then((ret) {
+                              SnackBar snackBar;
+                              if (ret > 0) {
+                                snackBar = new SnackBar(
+                                    content: I18nText('db.success.insert'));
+                              } else if (ret ==
+                                  DatabaseHelper.errorInsertUnique) {
+                                snackBar = new SnackBar(
+                                    content: I18nText('db.error.insert_unique',
+                                        translationParams: {'id': '$_id'}),
+                                    backgroundColor: Colors.redAccent);
+                              } else {
+                                snackBar = new SnackBar(
+                                    content: I18nText('db.error.unknown'),
+                                    backgroundColor: Colors.red);
+                              }
+                              Scaffold.of(context).showSnackBar(snackBar);
+                            });
                           }
                         },
                         child: I18nText('add'),
