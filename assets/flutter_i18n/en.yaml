@@ -4,7 +4,22 @@ monster:
   name: Name
   kill: Rainbow
   heart: HeartS
-
-
+searchType:
+  incomplete: Incomplete
+  incomplete_kill: Incomplete rainbow
+  incomplete_heart: Incomplete heartS
+  none_kill: None rainbow
+  none_heart: None heartS
+  all: All
+killType:
+  full:
+    incomplete: Incomplete
+    none: None
+    complete: Complete
+heartType:
+  full:
+    incomplete: Incomplete
+    none: None
+    complete: Complete
 required: Required
 min: 'more {value}'
