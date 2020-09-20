@@ -164,9 +164,6 @@ class _NewMonsterPageState extends State<NewMonsterPage> {
 
   final _formKey = GlobalKey<FormState>();
 
-  final Map<int, String> _killItems = {0: "まだ", 1: "虹なし", 2: "できた"};
-  final Map<int, String> _heartItems = {0: "まだ", 1: "こころなし", 2: "できた"};
-
   int _id;
   String _name;
   int _kill;
@@ -222,14 +219,16 @@ class _NewMonsterPageState extends State<NewMonsterPage> {
                         },
                       ),
                       new DropdownButtonFormField(
-                          value: _killItems.keys.first,
+                          value: KillTypeHelper.getId(KillType.values.first),
                           decoration: InputDecoration(
                               labelText: FlutterI18n.translate(
                                   context, 'monster.kill')),
-                          items: _killItems.entries.map<DropdownMenuItem<int>>(
-                              (MapEntry<int, String> entry) {
+                          items: KillType.values
+                              .map<DropdownMenuItem<int>>((KillType killType) {
                             return DropdownMenuItem<int>(
-                                value: entry.key, child: Text(entry.value));
+                                value: KillTypeHelper.getId(killType),
+                                child: I18nText(
+                                    KillTypeHelper.getFullNameKey(killType)));
                           }).toList(),
                           onSaved: (int value) {
                             this._kill = value;
@@ -240,14 +239,16 @@ class _NewMonsterPageState extends State<NewMonsterPage> {
                             });
                           }),
                       new DropdownButtonFormField(
-                          value: _heartItems.keys.first,
+                          value: HeartTypeHelper.getId(HeartType.values.first),
                           decoration: InputDecoration(
                               labelText: FlutterI18n.translate(
                                   context, 'monster.heart')),
-                          items: _heartItems.entries.map<DropdownMenuItem<int>>(
-                              (MapEntry<int, String> entry) {
+                          items: HeartType.values.map<DropdownMenuItem<int>>(
+                              (HeartType heartType) {
                             return DropdownMenuItem<int>(
-                                value: entry.key, child: Text(entry.value));
+                                value: HeartTypeHelper.getId(heartType),
+                                child: I18nText(
+                                    HeartTypeHelper.getFullNameKey(heartType)));
                           }).toList(),
                           onSaved: (int value) {
                             this._heart = value;

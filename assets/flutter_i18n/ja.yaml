@@ -10,7 +10,16 @@ searchType:
   incomplete_heart: こころＳ未完了
   none_kill: 図鑑虹なし
   none_heart: こころＳなし
-　all: 全て
-
+  all: 全て
+killType:
+  full:
+    incomplete: 未完了
+    none: なし
+    complete: 完了
+heartType:
+  full:
+    incomplete: 未完了
+    none: なし
+    complete: 完了
 required: 必須入力です
 min: '{value}以上です'

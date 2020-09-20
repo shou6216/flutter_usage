@@ -1,3 +1,5 @@
+import 'type.dart';
+
 class Monster {
   final int id;
   final String name;
@@ -294,25 +296,10 @@ class Monster {
   }
 
   String get killMessage {
-    switch (this.kill) {
-      case 1:
-        return '―';
-      case 2:
-        return '〇';
-      case 0:
-      default:
-        return '✕';
-    }
+    return KillTypeHelper.getShortName(this.kill);
   }
 
   String get heartMessage {
-    switch (this.heart) {
-      case 1:
-        return '―';
-      case 2:
-        return '〇';
-      default:
-        return '✕';
-    }
+    return HeartTypeHelper.getShortName(this.heart);
   }
 }
