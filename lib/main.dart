@@ -72,7 +72,13 @@ class _MyHomePageState extends State<MyHomePage> {
             IconButton(
               icon: Icon(Icons.add),
               tooltip: FlutterI18n.translate(context, 'add_monster'),
-              onPressed: () => {Navigator.of(context).pushNamed('/new')},
+              onPressed: () => {
+                Navigator.of(context).pushNamed('/new').then((value) {
+                  if (value) {
+                    setState(() => {print('reloaded search results')});
+                  }
+                })
+              },
             )
           ],
         ),
@@ -169,131 +175,147 @@ class _NewMonsterPageState extends State<NewMonsterPage> {
   int _kill;
   int _heart;
 
+  // 画面遷移後に再読み込みすべきかどうかのフラグ
+  bool _shouldReload = false;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: I18nText('add_monster')),
-        body: Builder(builder: (BuildContext context) {
-          return Form(
-              key: _formKey,
-              child: Container(
-                  padding: const EdgeInsets.all(50.0),
-                  child: Column(
-                    children: <Widget>[
-                      new TextFormField(
-                        enabled: true,
-                        maxLength: 3,
-                        keyboardType: TextInputType.number,
-                        inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly,
-                        ],
-                        decoration: const InputDecoration(labelText: 'No.'),
-                        validator: (String value) {
-                          if (value.isEmpty) {
-                            return FlutterI18n.translate(context, 'required');
-                          }
-
-                          int id = int.parse(value);
-                          return id > 0
-                              ? null
-                              : FlutterI18n.translate(context, 'min',
-                                  translationParams: {'value': '1'});
-                        },
-                        onSaved: (String value) {
-                          this._id = int.parse(value);
-                        },
-                      ),
-                      new TextFormField(
-                        maxLength: 30,
-                        keyboardType: TextInputType.name,
-                        decoration: InputDecoration(
-                            labelText:
-                                FlutterI18n.translate(context, 'monster.name')),
-                        validator: (String value) {
-                          return value.isEmpty
-                              ? FlutterI18n.translate(context, 'required')
-                              : null;
-                        },
-                        onSaved: (String value) {
-                          this._name = value;
-                        },
-                      ),
-                      new DropdownButtonFormField(
-                          value: KillTypeHelper.getId(KillType.values.first),
-                          decoration: InputDecoration(
-                              labelText: FlutterI18n.translate(
-                                  context, 'monster.kill')),
-                          items: KillType.values
-                              .map<DropdownMenuItem<int>>((KillType killType) {
-                            return DropdownMenuItem<int>(
-                                value: KillTypeHelper.getId(killType),
-                                child: I18nText(
-                                    KillTypeHelper.getFullNameKey(killType)));
-                          }).toList(),
-                          onSaved: (int value) {
-                            this._kill = value;
-                          },
-                          onChanged: (int newKill) {
-                            setState(() {
-                              _kill = newKill;
-                            });
-                          }),
-                      new DropdownButtonFormField(
-                          value: HeartTypeHelper.getId(HeartType.values.first),
-                          decoration: InputDecoration(
-                              labelText: FlutterI18n.translate(
-                                  context, 'monster.heart')),
-                          items: HeartType.values.map<DropdownMenuItem<int>>(
-                              (HeartType heartType) {
-                            return DropdownMenuItem<int>(
-                                value: HeartTypeHelper.getId(heartType),
-                                child: I18nText(
-                                    HeartTypeHelper.getFullNameKey(heartType)));
-                          }).toList(),
-                          onSaved: (int value) {
-                            this._heart = value;
-                          },
-                          onChanged: (int newHeart) {
-                            setState(() {
-                              _heart = newHeart;
-                            });
-                          }),
-                      RaisedButton(
-                        onPressed: () {
-                          if (this._formKey.currentState.validate()) {
-                            this._formKey.currentState.save();
-                            this
-                                .dbHelper
-                                .insert(new Monster(
-                                        id: this._id,
-                                        name: this._name,
-                                        kill: this._kill,
-                                        heart: this._heart)
-                                    .toMap())
-                                .then((ret) {
-                              SnackBar snackBar;
-                              if (ret > 0) {
-                                snackBar = new SnackBar(
-                                    content: I18nText('db.success.insert'));
-                              } else if (ret ==
-                                  DatabaseHelper.errorInsertUnique) {
-                                snackBar = new SnackBar(
-                                    content: I18nText('db.error.insert_unique',
-                                        translationParams: {'id': '$_id'}),
-                                    backgroundColor: Colors.redAccent);
-                              } else {
-                                snackBar = new SnackBar(
-                                    content: I18nText('db.error.unknown'),
-                                    backgroundColor: Colors.red);
+    return WillPopScope(
+        onWillPop: () {
+          Navigator.of(context).pop(_shouldReload);
+          return Future.value(true);
+        },
+        child: Scaffold(
+            appBar: AppBar(title: I18nText('add_monster')),
+            body: Builder(builder: (BuildContext context) {
+              return Form(
+                  key: _formKey,
+                  child: Container(
+                      padding: const EdgeInsets.all(50.0),
+                      child: Column(
+                        children: <Widget>[
+                          new TextFormField(
+                            enabled: true,
+                            maxLength: 3,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                            decoration: const InputDecoration(labelText: 'No.'),
+                            validator: (String value) {
+                              if (value.isEmpty) {
+                                return FlutterI18n.translate(
+                                    context, 'required');
                               }
-                              Scaffold.of(context).showSnackBar(snackBar);
-                            });
-                          }
-                        },
-                        child: I18nText('add'),
-                      )
-                    ],
-                  )));
-        }));
+
+                              int id = int.parse(value);
+                              return id > 0
+                                  ? null
+                                  : FlutterI18n.translate(context, 'min',
+                                      translationParams: {'value': '1'});
+                            },
+                            onSaved: (String value) {
+                              this._id = int.parse(value);
+                            },
+                          ),
+                          new TextFormField(
+                            maxLength: 30,
+                            keyboardType: TextInputType.name,
+                            decoration: InputDecoration(
+                                labelText: FlutterI18n.translate(
+                                    context, 'monster.name')),
+                            validator: (String value) {
+                              return value.isEmpty
+                                  ? FlutterI18n.translate(context, 'required')
+                                  : null;
+                            },
+                            onSaved: (String value) {
+                              this._name = value;
+                            },
+                          ),
+                          new DropdownButtonFormField(
+                              value:
+                                  KillTypeHelper.getId(KillType.values.first),
+                              decoration: InputDecoration(
+                                  labelText: FlutterI18n.translate(
+                                      context, 'monster.kill')),
+                              items: KillType.values.map<DropdownMenuItem<int>>(
+                                  (KillType killType) {
+                                return DropdownMenuItem<int>(
+                                    value: KillTypeHelper.getId(killType),
+                                    child: I18nText(
+                                        KillTypeHelper.getFullNameKey(
+                                            killType)));
+                              }).toList(),
+                              onSaved: (int value) {
+                                this._kill = value;
+                              },
+                              onChanged: (int newKill) {
+                                setState(() {
+                                  _kill = newKill;
+                                });
+                              }),
+                          new DropdownButtonFormField(
+                              value:
+                                  HeartTypeHelper.getId(HeartType.values.first),
+                              decoration: InputDecoration(
+                                  labelText: FlutterI18n.translate(
+                                      context, 'monster.heart')),
+                              items: HeartType.values
+                                  .map<DropdownMenuItem<int>>(
+                                      (HeartType heartType) {
+                                return DropdownMenuItem<int>(
+                                    value: HeartTypeHelper.getId(heartType),
+                                    child: I18nText(
+                                        HeartTypeHelper.getFullNameKey(
+                                            heartType)));
+                              }).toList(),
+                              onSaved: (int value) {
+                                this._heart = value;
+                              },
+                              onChanged: (int newHeart) {
+                                setState(() {
+                                  _heart = newHeart;
+                                });
+                              }),
+                          RaisedButton(
+                            onPressed: () {
+                              if (this._formKey.currentState.validate()) {
+                                this._formKey.currentState.save();
+                                this
+                                    .dbHelper
+                                    .insert(new Monster(
+                                            id: this._id,
+                                            name: this._name,
+                                            kill: this._kill,
+                                            heart: this._heart)
+                                        .toMap())
+                                    .then((ret) {
+                                  SnackBar snackBar;
+                                  if (ret > 0) {
+                                    snackBar = new SnackBar(
+                                        content: I18nText('db.success.insert'));
+                                    _shouldReload = true;
+                                  } else if (ret ==
+                                      DatabaseHelper.errorInsertUnique) {
+                                    snackBar = new SnackBar(
+                                        content: I18nText(
+                                            'db.error.insert_unique',
+                                            translationParams: {'id': '$_id'}),
+                                        backgroundColor: Colors.redAccent);
+                                  } else {
+                                    snackBar = new SnackBar(
+                                        content: I18nText('db.error.unknown'),
+                                        backgroundColor: Colors.red);
+                                  }
+                                  Scaffold.of(context).showSnackBar(snackBar);
+                                });
+                              }
+                            },
+                            child: I18nText('add'),
+                          )
+                        ],
+                      )));
+            })));
   }
 }
