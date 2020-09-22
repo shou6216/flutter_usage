@@ -292,7 +292,7 @@ class Monster {
   Monster({this.id, this.name, this.kill, this.heart});
 
   String get idMessage {
-    return id.toString().padLeft(3, "0");
+    return id?.toString()?.padLeft(3, "0");
   }
 
   String get killMessage {

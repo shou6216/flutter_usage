@@ -1,5 +1,7 @@
 add: 追加
+update: 更新
 add_monster: モンスター追加
+update_monster: モンスター更新
 monster:
   name: 名前
   kill: 図鑑虹
@@ -24,6 +26,7 @@ heartType:
 db:
   success:
     insert: 登録しました
+    update: 更新しました
   error:
     insert_unique: '{id}は既に登録されています'
     unknown: 予期せぬエラーが発生しました

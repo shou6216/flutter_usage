@@ -1,5 +1,7 @@
 add: Add
-add_monster: Add Monster
+update: Update
+add_monster: Add monster
+update_monster: Update monster
 monster:
   name: Name
   kill: Rainbow
@@ -24,6 +26,7 @@ heartType:
 db:
   success:
     insert: Inserted
+    update: Updated
   error:
     insert_unique: '{id} is already inserted'
     unknown: Unknown error

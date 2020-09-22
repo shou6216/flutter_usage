@@ -140,22 +140,41 @@ class _MyHomePageState extends State<MyHomePage> {
                                                       TextStyle(fontSize: 20))))
                                     ],
                                     rows: snapshot.data
-                                        .map<DataRow>((monster) =>
-                                            DataRow(cells: <DataCell>[
-                                              DataCell(Text(monster.idMessage,
-                                                  style:
-                                                      TextStyle(fontSize: 20))),
-                                              DataCell(Text(monster.name,
-                                                  style:
-                                                      TextStyle(fontSize: 20))),
-                                              DataCell(Text(monster.killMessage,
-                                                  style:
-                                                      TextStyle(fontSize: 20))),
-                                              DataCell(Text(
-                                                  monster.heartMessage,
-                                                  style:
-                                                      TextStyle(fontSize: 20)))
-                                            ]))
+                                        .map<DataRow>((monster) => DataRow(
+                                                key: Key(monster.idMessage),
+                                                onSelectChanged:
+                                                    (bool selected) {
+                                                  if (selected) {
+                                                    Navigator.of(context)
+                                                        .pushNamed('/new',
+                                                            arguments: monster)
+                                                        .then((value) {
+                                                      if (value) {
+                                                        setState(() => {
+                                                              print(
+                                                                  'reloaded search results')
+                                                            });
+                                                      }
+                                                    });
+                                                  }
+                                                },
+                                                cells: <DataCell>[
+                                                  DataCell(Text(
+                                                      monster.idMessage,
+                                                      style: TextStyle(
+                                                          fontSize: 20))),
+                                                  DataCell(Text(monster.name,
+                                                      style: TextStyle(
+                                                          fontSize: 20))),
+                                                  DataCell(Text(
+                                                      monster.killMessage,
+                                                      style: TextStyle(
+                                                          fontSize: 20))),
+                                                  DataCell(Text(
+                                                      monster.heartMessage,
+                                                      style: TextStyle(
+                                                          fontSize: 20)))
+                                                ]))
                                         .toList())))
                         : Center(
                             child: CircularProgressIndicator(),
@@ -180,13 +199,45 @@ class _NewMonsterPageState extends State<NewMonsterPage> {
 
   @override
   Widget build(BuildContext context) {
+    final Monster monster = ModalRoute.of(context).settings.arguments;
+
+    I18nText appBarTitle;
+    I18nText actionTitle;
+    I18nText actionResultTitle;
+    bool idEnabled;
+    if (monster == null) {
+      appBarTitle = I18nText('add_monster');
+      actionTitle = I18nText('add');
+      actionResultTitle = I18nText('db.success.insert');
+      idEnabled = true;
+    } else {
+      appBarTitle = I18nText('update_monster');
+      actionTitle = I18nText('update');
+      actionResultTitle = I18nText('db.success.update');
+      idEnabled = false;
+    }
+
+    // 初期表示データ
+    final Monster initialMonster = monster ??
+        new Monster(
+            id: null,
+            name: null,
+            kill: KillTypeHelper.getId(KillType.values.first),
+            heart: HeartTypeHelper.getId(HeartType.values.first));
+
+    // 登録 or 更新処理
+    Future<int> Function(Map<String, dynamic>) action =
+        (Map<String, dynamic> queryParams) => monster == null
+            ? dbHelper.insert(queryParams)
+            : dbHelper.update(queryParams);
+
     return WillPopScope(
         onWillPop: () {
           Navigator.of(context).pop(_shouldReload);
           return Future.value(true);
         },
         child: Scaffold(
-            appBar: AppBar(title: I18nText('add_monster')),
+            appBar: AppBar(title: appBarTitle),
             body: Builder(builder: (BuildContext context) {
               return Form(
                   key: _formKey,
@@ -195,8 +246,9 @@ class _NewMonsterPageState extends State<NewMonsterPage> {
                       child: Column(
                         children: <Widget>[
                           new TextFormField(
-                            enabled: true,
+                            enabled: idEnabled,
                             maxLength: 3,
+                            initialValue: initialMonster.idMessage,
                             keyboardType: TextInputType.number,
                             inputFormatters: <TextInputFormatter>[
                               FilteringTextInputFormatter.digitsOnly,
@@ -221,6 +273,7 @@ class _NewMonsterPageState extends State<NewMonsterPage> {
                           new TextFormField(
                             maxLength: 30,
                             keyboardType: TextInputType.name,
+                            initialValue: initialMonster.name,
                             decoration: InputDecoration(
                                 labelText: FlutterI18n.translate(
                                     context, 'monster.name')),
@@ -234,8 +287,7 @@ class _NewMonsterPageState extends State<NewMonsterPage> {
                             },
                           ),
                           new DropdownButtonFormField(
-                              value:
-                                  KillTypeHelper.getId(KillType.values.first),
+                              value: initialMonster.kill,
                               decoration: InputDecoration(
                                   labelText: FlutterI18n.translate(
                                       context, 'monster.kill')),
@@ -256,8 +308,7 @@ class _NewMonsterPageState extends State<NewMonsterPage> {
                                 });
                               }),
                           new DropdownButtonFormField(
-                              value:
-                                  HeartTypeHelper.getId(HeartType.values.first),
+                              value: initialMonster.heart,
                               decoration: InputDecoration(
                                   labelText: FlutterI18n.translate(
                                       context, 'monster.heart')),
@@ -282,9 +333,7 @@ class _NewMonsterPageState extends State<NewMonsterPage> {
                             onPressed: () {
                               if (this._formKey.currentState.validate()) {
                                 this._formKey.currentState.save();
-                                this
-                                    .dbHelper
-                                    .insert(new Monster(
+                                action(new Monster(
                                             id: this._id,
                                             name: this._name,
                                             kill: this._kill,
@@ -294,7 +343,7 @@ class _NewMonsterPageState extends State<NewMonsterPage> {
                                   SnackBar snackBar;
                                   if (ret > 0) {
                                     snackBar = new SnackBar(
-                                        content: I18nText('db.success.insert'));
+                                        content: actionResultTitle);
                                     _shouldReload = true;
                                   } else if (ret ==
                                       DatabaseHelper.errorInsertUnique) {
@@ -312,7 +361,7 @@ class _NewMonsterPageState extends State<NewMonsterPage> {
                                 });
                               }
                             },
-                            child: I18nText('add'),
+                            child: actionTitle,
                           )
                         ],
                       )));
